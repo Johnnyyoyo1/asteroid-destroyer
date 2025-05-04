@@ -1,0 +1,184 @@
+* {
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  zoom: 1;
+}
+
+
+
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body {
+  line-height: 1.5;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  font-family: AGENCY;
+  color: aliceblue;
+  overflow-y: auto;
+}
+
+.disclaimer {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body a {
+  color: aliceblue;
+}
+
+body p {
+  text-align: left;
+}
+
+body h1 {
+  text-align: center;
+}
+
+@keyframes pan {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+
+.center {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+}
+
+.content {
+  padding-top: 100px;
+  max-width: 750px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: rgba(17, 16, 16, 0.541);
+  border-radius: 15px;
+  overflow-y: auto;
+  margin-left: 200;
+}
+
+#icon-pattern {
+  background-image: url("asset/iconb.png");
+  background-size: 35%;
+  position: fixed;
+  left: 50%;
+  top: 0px;
+  translate: -50% 0%;
+  z-index: -2;
+  height: 100%;
+  width: 100%;
+  min-width: 1200px;
+  opacity: 1;
+  animation: pan 180s linear infinite;
+  will-change: background-position;
+}
+
+.bottom-aligned {
+  position: absolute;
+  /* Position the div absolutely */
+  bottom: 5%;
+  /* Align it to the bottom */
+}
+
+.circle-icon {
+  width: 60px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #000000;
+  border: 1px solid #ccc;
+  display: inline-block;
+  background-image: url('asset/apple.gif');
+  background-size: cover;
+  background-position: center;
+}
+
+ul ul {
+  padding-left: 20px;
+}
+
+.self td {
+  margin: 20px;
+}
+
+@font-face {
+  font-family: AGENCY;
+  src: url(asset/AGENCYB.TTF);
+}
+
+@font-face {
+  font-family: TERMINAL;
+  src: url(asset/Terminal.ttf);
+}
+
+.disabled-link {
+  pointer-events: none;
+  /* Disable clicking */
+  cursor: not-allowed;
+  /* Change the cursor to indicate it's not clickable */
+  text-decoration: line-through;
+  /*line */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 500px;
+  align-self: center;
+}
+
+@media (min-width: 992px) { /* lg breakpoint */
+  .tableFixHead {
+    width: max-content;
+    padding-inline: 2vw;
+  }
+} 
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.tableFixHead caption {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.monospaced {
+  font-family: "Courier New", Courier, monospace; 
+  font-size: smaller;
+  line-height: 1;
+}
+
+
+
+/* Just common table stuff. Really. */

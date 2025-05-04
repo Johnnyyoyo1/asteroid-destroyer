@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="asset/ico/favicon.ico" type="image/x-icon">
+    <script rel="preload" type="text/javascript" src="common.js"></script>
+    <title>Asteroid Destroyer</title>
+
+</head>
+
+<body style="background-color: #000000">
+    <script>
+        header();
+        body();
+    </script>
+    <!--content start-->
+    
+    <div class="container">
+        <div class="row align-items-center border border-warning d-flex flex-lg-row flex-column mt-5 mx-0 mx-lg-4 py-3"
+            style="background-image: url(asset/moon.png); max-width: 1400px;">
+            <div class="col-8 align-self-center">
+                <iframe draggable="false" class="width"
+                    style="width: 800px; height: 800px; min-width: 300px; min-height: 300px; max-width: 50vw; max-height: 50vw; border: solid 5px rgb(61, 60, 66)"
+                    frameborder="1" scrolling="no" src="destroryer/index.html"></iframe>
+            </div>
+            <div class="col-12 col-lg-3">
+                <div class="tableFixHead">
+                    <table class="table caption-top table-bordered table-hover table-max-content mx-0  "
+                        style="border: solid 5px rgb(61, 60, 66); font-family:TERMINAL;">
+                        <caption style="color: #FFE81F;" class="text-center">Leaderboard</caption>
+                        <thead class="table-dark table-striped">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                            </tr>
+
+                        </thead>
+                        <tbody class="table-dark" id="leaderboard">
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Insert this script at the bottom of the HTML, but before you use any Firebase services -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            projectId: "asteroid-destroye-leaderboard"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+
+        async function getLeaders() {
+            const leaderCollection = collection(db, "leaderboard");
+            const leaderSnapshot = await getDocs(leaderCollection);
+            const leaderList = leaderSnapshot.docs.map(doc => ({
+                name: doc.data().name,
+                score: doc.data().score
+            }));
+            return leaderList;
+        }
+
+        function cacheLeaders(leaderList) {
+            localStorage.setItem('leaderboard', JSON.stringify(leaderList));
+            localStorage.setItem('leaderboardTimestamp', Date.now());
+        }
+
+        function getCachedLeaders() {
+            const cachedLeaders = localStorage.getItem('leaderboard');
+            return cachedLeaders ? JSON.parse(cachedLeaders) : null;
+        }
+
+        function isCacheExpired() {
+            const cacheTimestamp = localStorage.getItem('leaderboardTimestamp');
+            if (!cacheTimestamp) return true;
+            const oneHour = 60 * 60 * 1000;
+            return (Date.now() - cacheTimestamp) > oneHour;
+        }
+
+        async function displayLeaders() {
+            let leaderList;
+            if (isCacheExpired()) {
+                leaderList = await getLeaders();
+                cacheLeaders(leaderList);
+            } else {
+                leaderList = getCachedLeaders();
+            }
+
+            const leaderboardElement = document.getElementById("leaderboard");
+            leaderList.sort((a, b) => b.score - a.score);
+            const top20Leaders = leaderList.slice(0, 20);
+            leaderboardElement.innerHTML = '';
+
+            try {
+                let incr = 1;
+                top20Leaders.forEach(leader => {
+                    const row = document.createElement('tr');
+                    const cell1 = document.createElement('td');
+                    cell1.textContent = incr;
+                    row.appendChild(cell1);
+                    const cell2 = document.createElement('td');
+                    cell2.textContent = leader.name;
+                    row.appendChild(cell2);
+                    const cell3 = document.createElement('td');
+                    cell3.textContent = leader.score;
+                    row.appendChild(cell3);
+                    leaderboardElement.appendChild(row);
+                    incr++;
+                    if (incr > 20) {
+                        throw new Error("Oops! Stopping the loop.");
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        displayLeaders();
+    </script>
+    <!--content end-->
+    <script>footer();</script>
+</body>
+
+</html>
